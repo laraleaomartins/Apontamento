@@ -8,9 +8,11 @@ using Microsoft.EntityFrameworkCore;
 using Apontamento.Data;
 using Apontamento.Models;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Apontamento.Controllers
 {
+    
     public class TabelaControlesController : Controller
     {
         private readonly ApontamentoContext _context;
@@ -21,20 +23,19 @@ namespace Apontamento.Controllers
         }
 
         // GET: TabelaControles
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-           var session = HttpContext.Session.GetInt32("SessionUsuario");
+            var session = HttpContext.Session.GetInt32("SessionUsuario");
 
-            if(session == null)
+            if (session == null)
             {
-                return RedirectToAction("Login", "UsuariosController");
+                return RedirectToAction("Login", "Usuarios");
             }
-
-                     
 
             Usuario UserDB = _context.Usuario.Where(u => u.UsuarioID == session).FirstOrDefault();
 
-            return View(await _context.TabelaControle.ToListAsync());
+            return View(_context.TabelaControle.Where(c => c.UsuarioID == session).ToList());
+
         }
 
 
@@ -59,7 +60,12 @@ namespace Apontamento.Controllers
         // GET: TabelaControles/Create
         public IActionResult Create()
         {
-            return View();
+            var session = HttpContext.Session.GetInt32("SessionUsuario");
+            return View(
+                new TabelaControle
+                {
+                    UsuarioID = session.GetValueOrDefault()
+                }); ;
         }
 
         // POST: TabelaControles/Create
@@ -67,13 +73,18 @@ namespace Apontamento.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Consultor,DiasDaSemana,Periodo,Data,HoraInicial,HoraFinal,HorasTrabalhadas,Atividade,Observacao")] TabelaControle tabelaControle)
+        public async Task<IActionResult> Create(TabelaControle tabelaControle)
         {
             if (ModelState.IsValid)
             {
+
+                var usuario = _context.Usuario.FirstOrDefault(u => u.UsuarioID == tabelaControle.UsuarioID);
+
+
                 tabelaControle.HorasTrabalhadas = HorasTrabalhadas(tabelaControle.HoraFinal, tabelaControle.HoraInicial);
                 tabelaControle.Periodo = Periodo(tabelaControle.HoraInicial);
                 tabelaControle.DiasDaSemana = Convert.ToString(DiasDaSemana(tabelaControle.Data));
+                tabelaControle.UsuarioID = usuario.UsuarioID;
                 _context.Add(tabelaControle);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -190,7 +201,9 @@ namespace Apontamento.Controllers
             return Data.DayOfWeek;
         }
 
-        
+
+
+
     }
 }
 

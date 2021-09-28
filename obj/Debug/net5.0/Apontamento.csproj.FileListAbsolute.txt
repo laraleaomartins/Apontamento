@@ -154,3 +154,11 @@ C:\Users\lara.martins\source\repos\Apontamento\Apontamento\obj\Debug\net5.0\Razo
 C:\Users\lara.martins\source\repos\Apontamento\Apontamento\obj\Debug\net5.0\Razor\Views\Usuarios\Edit.cshtml.g.cs
 C:\Users\lara.martins\source\repos\Apontamento\Apontamento\obj\Debug\net5.0\Razor\Views\Usuarios\Index.cshtml.g.cs
 C:\Users\lara.martins\source\repos\Apontamento\Apontamento\obj\Debug\net5.0\Razor\Views\Usuarios\Login.cshtml.g.cs
+C:\Users\lara.martins\source\repos\Apontamento\Apontamento\bin\Debug\net5.0\BouncyCastle.Crypto.dll
+C:\Users\lara.martins\source\repos\Apontamento\Apontamento\bin\Debug\net5.0\Google.Protobuf.dll
+C:\Users\lara.martins\source\repos\Apontamento\Apontamento\bin\Debug\net5.0\K4os.Compression.LZ4.dll
+C:\Users\lara.martins\source\repos\Apontamento\Apontamento\bin\Debug\net5.0\K4os.Compression.LZ4.Streams.dll
+C:\Users\lara.martins\source\repos\Apontamento\Apontamento\bin\Debug\net5.0\K4os.Hash.xxHash.dll
+C:\Users\lara.martins\source\repos\Apontamento\Apontamento\bin\Debug\net5.0\MySql.Data.dll
+C:\Users\lara.martins\source\repos\Apontamento\Apontamento\bin\Debug\net5.0\Ubiety.Dns.Core.dll
+C:\Users\lara.martins\source\repos\Apontamento\Apontamento\bin\Debug\net5.0\Zstandard.Net.dll

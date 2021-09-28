@@ -50,12 +50,12 @@ namespace Apontamento.Migrations
                     b.Property<string>("Periodo")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("UsuarioID1")
+                    b.Property<int>("UsuarioID")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UsuarioID1");
+                    b.HasIndex("UsuarioID");
 
                     b.ToTable("TabelaControle");
                 });
@@ -66,6 +66,9 @@ namespace Apontamento.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("ControleId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
@@ -83,11 +86,18 @@ namespace Apontamento.Migrations
 
             modelBuilder.Entity("Apontamento.Models.TabelaControle", b =>
                 {
-                    b.HasOne("Apontamento.Models.Usuario", "UsuarioID")
-                        .WithMany()
-                        .HasForeignKey("UsuarioID1");
+                    b.HasOne("Apontamento.Models.Usuario", "Usuario")
+                        .WithMany("ListaDeControle")
+                        .HasForeignKey("UsuarioID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Navigation("UsuarioID");
+                    b.Navigation("Usuario");
+                });
+
+            modelBuilder.Entity("Apontamento.Models.Usuario", b =>
+                {
+                    b.Navigation("ListaDeControle");
                 });
 #pragma warning restore 612, 618
         }

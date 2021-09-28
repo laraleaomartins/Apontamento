@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Apontamento.Migrations
 {
     [DbContext(typeof(ApontamentoContext))]
-    [Migration("20210922122328_Third")]
-    partial class Third
+    [Migration("20210927141519_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -29,9 +29,6 @@ namespace Apontamento.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Atividade")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Consultor")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("Data")
@@ -55,9 +52,54 @@ namespace Apontamento.Migrations
                     b.Property<string>("Periodo")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("UsuarioID")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
+                    b.HasIndex("UsuarioID");
+
                     b.ToTable("TabelaControle");
+                });
+
+            modelBuilder.Entity("Apontamento.Models.Usuario", b =>
+                {
+                    b.Property<int>("UsuarioID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("ControleId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Nome")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Senha")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("UsuarioID");
+
+                    b.ToTable("Usuario");
+                });
+
+            modelBuilder.Entity("Apontamento.Models.TabelaControle", b =>
+                {
+                    b.HasOne("Apontamento.Models.Usuario", "Usuario")
+                        .WithMany("ListaDeControle")
+                        .HasForeignKey("UsuarioID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Usuario");
+                });
+
+            modelBuilder.Entity("Apontamento.Models.Usuario", b =>
+                {
+                    b.Navigation("ListaDeControle");
                 });
 #pragma warning restore 612, 618
         }

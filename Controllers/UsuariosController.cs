@@ -9,7 +9,7 @@ using Apontamento.Data;
 using Apontamento.Models;
 using Microsoft.AspNetCore.Http;
 using System.Text;
-
+using Microsoft.AspNetCore.Authentication;
 
 namespace Apontamento.Controllers
 {
@@ -146,14 +146,14 @@ namespace Apontamento.Controllers
         }
 
 
-        // POST: Usuarios/Edit/5
+        // POST: Usuarios/Login/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Login([Bind("UsuarioID,Nome,Email,Senha")] Usuario usuario)
         {
-            
+
             if (usuario.Email == null || usuario.Senha == null)
             {
                 ViewData["Mensagem"] = "Preencha login e senha.";
@@ -173,13 +173,27 @@ namespace Apontamento.Controllers
                 ViewData["Mensagem"] = "Senha incorreta";
                 return View();
             }
-           
+
 
             HttpContext.Session.SetInt32("SessionUsuario", userDB.UsuarioID);
 
 
 
             return RedirectToAction("Index", "TabelaControles");
+
+        }
+
+        public async Task<IActionResult> Logout()
+        {
+            //var session = HttpContext.Session.GetInt32("SessionUsuario");
+            HttpContext.Session.Remove("SessionUsuario");
+
+
+                //HttpContext.Session.SetInt32("SessionUsuario", usuario.UsuarioID);
+
+                //await HttpContext.SignOutAsync();
+
+            return RedirectToAction("Login", "Usuarios");
 
         }
 

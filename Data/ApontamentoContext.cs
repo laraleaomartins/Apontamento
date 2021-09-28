@@ -17,5 +17,16 @@ namespace Apontamento.Data
         public DbSet<Apontamento.Models.TabelaControle> TabelaControle { get; set; }
 
         public DbSet<Apontamento.Models.Usuario> Usuario { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<TabelaControle>(c =>
+            {
+                c.HasKey(b => b.Id);
+                c.HasOne(c => c.Usuario)
+                .WithMany(d => d.ListaDeControle)
+                .HasForeignKey(e => e.UsuarioID);
+            });
+        }
     }
 }

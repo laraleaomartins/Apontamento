@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Apontamento.Models
@@ -38,8 +37,8 @@ namespace Apontamento.Models
         [Display(Name = "Observação")]
         public string Observacao { get; set; }
 
-        [ForeignKey("UsuarioFK")]
-        public Usuario Usuario { get; set; }
+        public int UsuarioID { get; set; }
+        public virtual Usuario Usuario { get; set; }
 
 
 

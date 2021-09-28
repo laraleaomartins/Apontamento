@@ -11,5 +11,10 @@ namespace Apontamento.Models
         public string Nome { get; set; }
         public string Email { get; set; }
         public string Senha { get; set; }
+        public int ControleId { get; set; }
+        public virtual ICollection<TabelaControle> ListaDeControle { get; private set; } = new List<TabelaControle>();
+
     }
+
+
 }

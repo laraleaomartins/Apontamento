@@ -10,6 +10,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Apontamento.Data;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace Apontamento
 {
@@ -27,24 +28,32 @@ namespace Apontamento
         {
             services.AddDistributedMemoryCache();
 
-            services.AddSession(options =>
-            {
-                options.IdleTimeout = TimeSpan.FromMinutes(15);
-                options.Cookie.HttpOnly = true;
-                options.Cookie.IsEssential = true;
-            });
+            //services.AddSession(options =>
+            //{
+            //    options.IdleTimeout = TimeSpan.FromMinutes(15);
+            //    options.Cookie.HttpOnly = true;
+            //    options.Cookie.IsEssential = true;
+            //});
 
             services.AddSession(options =>
             {
                 options.Cookie.Name = ".AdventureWorks.Session";
                 options.IdleTimeout = TimeSpan.FromMinutes(15);
                 options.Cookie.IsEssential = true;
+
             });
+
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+            .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options => Configuration.Bind(".AdventureWorks.Session", options));
+
+
 
             services.AddControllersWithViews();
 
             services.AddDbContext<ApontamentoContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("ApontamentoContext")));
+
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -64,7 +73,8 @@ namespace Apontamento
             app.UseStaticFiles();
 
             app.UseRouting();
-          
+            app.UseAuthentication();
+
 
             app.UseAuthorization();
             app.UseSession();
@@ -75,6 +85,7 @@ namespace Apontamento
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
+            
         }
     }
 }
